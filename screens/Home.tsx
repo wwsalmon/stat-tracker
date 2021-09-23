@@ -24,7 +24,7 @@ export default function Home({}: {}) {
                     const iconName = iconOpts[route.name];
 
                     return (
-                        <Feather name={iconName as any} color={color} size={16}/>
+                        <Feather name={iconName as any} color={color} size={20}/>
                     );
                 },
                 headerShown: false,
