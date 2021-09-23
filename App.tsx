@@ -4,6 +4,7 @@ import {createStackNavigator} from "@react-navigation/stack";
 import Home from "./screens/Home";
 import {ActionSheetProvider} from "@expo/react-native-action-sheet";
 import NewRecord from "./screens/NewRecord";
+import NewStat from "./screens/NewStat";
 
 export default function App() {
     const Stack = createStackNavigator();
@@ -16,6 +17,7 @@ export default function App() {
                 }}>
                     <Stack.Screen name="Home" component={Home}/>
                     <Stack.Screen name="New" component={NewRecord}/>
+                    <Stack.Screen name="New Stat" component={NewStat}/>
                 </Stack.Navigator>
             </NavigationContainer>
         </ActionSheetProvider>
