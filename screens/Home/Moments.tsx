@@ -4,10 +4,18 @@ import HomeContainer from "../../components/HomeContainer";
 import {StackNavigationProp} from "@react-navigation/stack";
 import tw from "tailwind-react-native-classnames";
 import RecordCard from "../../components/RecordCard";
+import {useActionSheet} from "@expo/react-native-action-sheet";
 
 export default function Moments({navigation}: {navigation: StackNavigationProp<any>}) {
+    const {showActionSheetWithOptions} = useActionSheet();
+
     return (
-        <HomeContainer navigation={navigation}>
+        <HomeContainer navigation={navigation} onPress={() => showActionSheetWithOptions({
+            options: ["Moment", "Daily recap", "Weekly recap", "Monthly recap", "Cancel"],
+            cancelButtonIndex: 4
+        }, i => {
+            if (i !== 4) navigation.navigate("New");
+        })}>
             <RecordCard stats={[
                 {label: "Stress", score: 0, bgClass: "bg-blue-500"},
                 {label: "Anxiety", score: 0, bgClass: "bg-purple-500"},
