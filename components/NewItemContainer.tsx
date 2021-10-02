@@ -4,12 +4,13 @@ import tw from "tailwind-react-native-classnames";
 import {StackNavigationProp} from "@react-navigation/stack";
 import BodyText from "../components/BodyText";
 
-export default function NewItemContainer({navigation, canSave, itemName, children, noScroll}: {
+export default function NewItemContainer({navigation, canSave, itemName, children, noScroll, onSave}: {
     navigation: StackNavigationProp<any>,
     canSave: boolean,
     itemName: string,
     children: ReactNode,
     noScroll?: boolean,
+    onSave: () => any,
 }) {
     return (
         <View style={tw`flex-1`}>
@@ -22,6 +23,7 @@ export default function NewItemContainer({navigation, canSave, itemName, childre
                     <Pressable
                         style={tw.style(`absolute right-4`)}
                         disabled={!canSave}
+                        onPress={onSave}
                     >
                         <BodyText className={canSave ? "text-blue-500" : "text-gray-400"}>Save</BodyText>
                     </Pressable>

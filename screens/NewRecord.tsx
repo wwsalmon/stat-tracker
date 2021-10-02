@@ -13,7 +13,7 @@ export default function NewRecord({navigation}: { navigation: StackNavigationPro
     const canSave = !!(stats.length && stats.every(d => d.label && d.score));
 
     return (
-        <NewItemContainer navigation={navigation} canSave={canSave} itemName="record">
+        <NewItemContainer navigation={navigation} canSave={canSave} itemName="record" onSave={() => null}>
             <View style={tw`mt-4`}>
                 {stats.map((stat, i) => (
                     <View style={tw`px-3 h-12 border flex-row items-center bg-white border-gray-100 px-4`} key={i}>

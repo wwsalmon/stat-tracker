@@ -11,12 +11,14 @@ import BodyText from "../../components/BodyText";
 export default function Settings({navigation}: {navigation: StackNavigationProp<any>}) {
     const user = useUser();
 
-    if (!user) return <></>;
+    if (!user) {
+        navigation.navigate("Login");
+    };
 
-    return (
+    return user ? (
         <Container>
             <H1 className="my-6">Settings</H1>
-            <BodyText>Signed in as {user.displayName}</BodyText>
+            <BodyText>Signed in as {user.displayName} with UID {user.uid}</BodyText>
             <Pressable onPress={() => {
                 firebase.auth().signOut();
                 navigation.navigate("Login");
@@ -24,5 +26,5 @@ export default function Settings({navigation}: {navigation: StackNavigationProp<
                 <Text>Sign out</Text>
             </Pressable>
         </Container>
-    );
+    ) : <></>;
 }
