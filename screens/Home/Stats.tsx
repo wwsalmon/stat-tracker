@@ -7,6 +7,7 @@ import {useUser} from "../../components/UserProvider";
 import firebase from "firebase";
 import {View} from "react-native";
 import {RouteProp} from "@react-navigation/native";
+import tw from "tailwind-react-native-classnames";
 
 export default function Stats({route, navigation}: {route: RouteProp<any>, navigation: StackNavigationProp<any>}) {
     const user = useUser();
@@ -36,8 +37,10 @@ export default function Stats({route, navigation}: {route: RouteProp<any>, navig
     return (
         <HomeContainer navigation={navigation} onPress={() => navigation.navigate("New Stat")}>
             {stats.map(stat => (
-                <View key={stat.id}>
-                    <BodyText>{stat.name} {stat.type}</BodyText>
+                <View key={stat.id} style={tw`py-4 border-b border-gray-300 flex-row items-center`}>
+                    <View style={tw.style(`h-4 w-4 mr-4 rounded-full`, {backgroundColor: stat.color})}/>
+                    <BodyText>{stat.name}</BodyText>
+                    <BodyText className="ml-auto text-gray-400">{stat.type}</BodyText>
                 </View>
             ))}
         </HomeContainer>
