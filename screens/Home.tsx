@@ -1,7 +1,6 @@
 import React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import Moments from "./Home/Moments";
-import {Text} from "react-native";
 import {Feather} from "@expo/vector-icons";
 import Settings from "./Home/Settings";
 import Stats from "./Home/Stats";
