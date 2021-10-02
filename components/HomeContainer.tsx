@@ -5,6 +5,7 @@ import Container from "./Container";
 import React, {ReactNode} from "react";
 import {useRoute} from "@react-navigation/native";
 import {StackNavigationProp} from "@react-navigation/stack";
+import H1 from "./H1";
 
 export default function HomeContainer({children, navigation, onPress}: {
     children: ReactNode,
@@ -16,7 +17,7 @@ export default function HomeContainer({children, navigation, onPress}: {
     return (
         <Container withTabs={true} noScroll={true}>
             <View style={tw`flex-row items-center my-6`}>
-                <Text style={tw`text-3xl font-bold`}>{route.name}</Text>
+                <H1>{route.name}</H1>
                 <Pressable
                     style={tw`ml-auto h-8 w-8 bg-blue-500 rounded-full items-center justify-center`}
                     onPress={onPress}
