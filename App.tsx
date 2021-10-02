@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useState} from "react";
+import React from "react";
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
 import Home from "./screens/Home";
@@ -8,7 +8,7 @@ import NewStat from "./screens/NewStat";
 
 import firebase from "firebase";
 import Login from "./screens/Login";
-import User = firebase.User;
+import UserProvider from "./components/UserProvider";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBVeYtruQriOcf37AgD8PhPo9rIVc827YY",
@@ -22,25 +22,14 @@ const firebaseConfig = {
 
 if (firebase.apps.length === 0) firebase.initializeApp(firebaseConfig);
 
-const UserContext = createContext<User | null>(null);
-export const useUser = () => useContext(UserContext);
-
 export default function App() {
     const Stack = createStackNavigator();
 
-    const [user, setUser] = useState<User | null>(null);
-
-    firebase.auth().onAuthStateChanged(user => {
-        if (user) return setUser(user);
-
-        setUser(null);
-    });
-
     return (
         <ActionSheetProvider>
-            <UserContext.Provider value={user}>
+            <UserProvider>
                 <NavigationContainer>
-                    <Stack.Navigator initialRouteName={user ? "Home" : "Login"} screenOptions={{
+                    <Stack.Navigator initialRouteName="Home" screenOptions={{
                         headerShown: false
                     }}>
                         <Stack.Screen name="Home" component={Home}/>
@@ -49,7 +38,7 @@ export default function App() {
                         <Stack.Screen name="Login" component={Login}/>
                     </Stack.Navigator>
                 </NavigationContainer>
-            </UserContext.Provider>
+            </UserProvider>
         </ActionSheetProvider>
     );
 }

@@ -5,7 +5,7 @@ import firebase from "firebase";
 import {Pressable} from "react-native";
 import BodyText from "../components/BodyText";
 import {StackNavigationProp} from "@react-navigation/stack";
-import {useUser} from "../App";
+import {useUser} from "../components/UserProvider";
 
 export default function Login({navigation}: {navigation: StackNavigationProp<any>}) {
     const user = useUser();

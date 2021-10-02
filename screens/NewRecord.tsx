@@ -44,7 +44,8 @@ export default function NewRecord({navigation}: { navigation: StackNavigationPro
                             <RNPickerSelect
                                 placeholder={{label: "Score", value: null}}
                                 style={{
-                                    inputIOS: tw.style(`w-24 border-l-2 border-gray-100 pl-4 -mr-5 h-12`, {fontSize: 16})
+                                    inputIOS: tw.style(`w-24 border-l-2 border-gray-100 pl-4 -mr-5 h-12`, {fontSize: 16}),
+                                    inputAndroid: tw.style(`w-24 border-l-2 border-gray-100 -mr-5 h-12`, {fontSize: 16})
                                 }}
                                 onValueChange={(value) => {
                                     let newStats = [...stats];

@@ -22,12 +22,7 @@ export default function HomeContainer({children, navigation, onPress}: {
                 <H1>{route.name}</H1>
                 <Pressable
                     style={tw`ml-auto h-8 w-8 bg-blue-500 rounded-full items-center justify-center`}
-                    onPress={() => showActionSheetWithOptions({
-                        options: ["Moment", "Daily recap", "Weekly recap", "Monthly recap", "Cancel"],
-                        cancelButtonIndex: 4
-                    }, i => {
-                        if (i !== 4) navigation.navigate("New");
-                    })}
+                    onPress={onPress}
                 >
                     <Feather name="plus" color="white" size={20}/>
                 </Pressable>

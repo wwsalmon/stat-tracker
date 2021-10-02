@@ -5,7 +5,7 @@ import React from "react";
 import H1 from "../../components/H1";
 import {StackNavigationProp} from "@react-navigation/stack";
 import firebase from "firebase";
-import {useUser} from "../../App";
+import {useUser} from "../../components/UserProvider";
 import BodyText from "../../components/BodyText";
 
 export default function Settings({navigation}: {navigation: StackNavigationProp<any>}) {
