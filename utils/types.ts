@@ -8,3 +8,14 @@ export interface StatObj {
     type: StatTypeOpts,
     color: string,
 }
+
+export interface RecordObj {
+    id: string,
+    createdAt: string,
+    stats: RecordStatObj[],
+}
+
+export interface RecordStatObj {
+    statId: string,
+    value: string | number,
+}
