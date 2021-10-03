@@ -99,7 +99,7 @@ export default function LogItem({navigation, route}: {
                     "Are you sure you want to delete this record? This action cannot be undone.",
                     [{text: "Delete", style: "destructive", onPress: onDelete}, {text: "Cancel", style: "cancel"}]
                 )}>
-                    <Feather name="trash" size={20}/>
+                    <Feather name="trash" size={20} color="lightcoral"/>
                 </Pressable>
             </View>
             {record ? (

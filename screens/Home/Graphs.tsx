@@ -6,7 +6,7 @@ import HomeContainer from "../../components/HomeContainer";
 export default function Graphs({navigation}: {navigation: StackNavigationProp<any>}) {
     return (
         <HomeContainer navigation={navigation} onPress={() => null}>
-            <BodyText>Graph!</BodyText>
+            <BodyText>Coming soon</BodyText>
         </HomeContainer>
     );
 }

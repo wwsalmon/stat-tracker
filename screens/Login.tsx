@@ -7,6 +7,7 @@ import {StackNavigationProp} from "@react-navigation/stack";
 import {useUser} from "../components/UserProvider";
 import * as Google from "expo-auth-session/providers/google";
 import firebase from "firebase";
+import tw from "tailwind-react-native-classnames";
 
 export default function Login({navigation}: {navigation: StackNavigationProp<any>}) {
     const user = useUser();
@@ -38,7 +39,9 @@ export default function Login({navigation}: {navigation: StackNavigationProp<any
     return (
         <Container>
             <H1 className="my-6">Log in</H1>
-            <Pressable onPress={() => promptAsync()}><BodyText>Sign in</BodyText></Pressable>
+            <Pressable onPress={() => promptAsync()} style={tw`p-2 bg-gray-100 rounded items-center`}>
+                <BodyText>Sign in</BodyText>
+            </Pressable>
         </Container>
     );
 }
