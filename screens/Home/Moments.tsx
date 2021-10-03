@@ -11,7 +11,7 @@ import firebase from "firebase";
 import {SlideModal} from "react-native-slide-modal";
 import LogContainer from "../../components/LogContainer";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-import {format} from "date-fns";
+import {format, setHours} from "date-fns";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function Moments({navigation}: { navigation: StackNavigationProp<any> }) {
@@ -108,7 +108,10 @@ export default function Moments({navigation}: { navigation: StackNavigationProp<
                                 />
                             </View>
                             <Pressable onPress={() => setThisDate(new Date())} style={tw`bg-white px-4 h-12 justify-center border-t border-gray-100`}>
-                                <BodyText className="text-gray-400">Set to current time</BodyText>
+                                <BodyText className="text-gray-500">Set to current time</BodyText>
+                            </Pressable>
+                            <Pressable onPress={() => setThisDate(new Date((thisDate || new Date()).setHours(0,0,0,0)))} style={tw`bg-white px-4 h-12 justify-center border-t border-gray-100`}>
+                                <BodyText className="text-gray-500">Set to 0:00</BodyText>
                             </Pressable>
                         </View>
                         <View style={tw`my-4`}>
