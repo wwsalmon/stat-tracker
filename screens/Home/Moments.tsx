@@ -11,14 +11,18 @@ import firebase from "firebase";
 import {SlideModal} from "react-native-slide-modal";
 import LogContainer from "../../components/LogContainer";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import {format} from "date-fns";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function Moments({navigation}: { navigation: StackNavigationProp<any> }) {
     const user = useUser();
     const [stats, setStats] = useState<StatObj[]>([]);
     const [thisStats, setThisStats] = useState<(StatObj & {value: string | number})[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const [thisDate, setThisDate] = useState<Date | null>(new Date());
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [iter, setIter] = useState<number>(0);
+    const [dateModalOpen, setDateModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (!user) return navigation.navigate("Login");
@@ -64,7 +68,7 @@ export default function Moments({navigation}: { navigation: StackNavigationProp<
         db
             .collection(`users/${user.uid}/records`)
             .add({
-                createdAt: new Date(),
+                createdAt: thisDate,
                 stats: thisStats.map(stat => ({
                     statId: stat.id,
                     value: stat.value,
@@ -72,6 +76,7 @@ export default function Moments({navigation}: { navigation: StackNavigationProp<
             })
             .then(res => {
                 setThisStats([]);
+                setThisDate(null);
                 setIter(iter + 1);
                 setModalOpen(false);
             }).catch(e => console.log(e));
@@ -94,6 +99,18 @@ export default function Moments({navigation}: { navigation: StackNavigationProp<
                 modalHeaderTitle="New record"
                 modalContainer={
                     <KeyboardAwareScrollView style={tw.style(`w-full h-full bg-gray-50`, {minHeight: Dimensions.get("window").height - 110})}>
+                        <View style={tw`mt-4`}>
+                            <View style={tw`bg-white w-full px-4 h-12 justify-center`}>
+                                <DateTimePicker
+                                    value={thisDate || new Date()}
+                                    onChange={(e, date) => setThisDate(date as Date)}
+                                    mode="datetime"
+                                />
+                            </View>
+                            <Pressable onPress={() => setThisDate(new Date())} style={tw`bg-white px-4 h-12 justify-center border-t border-gray-100`}>
+                                <BodyText className="text-gray-400">Set to current time</BodyText>
+                            </Pressable>
+                        </View>
                         <View style={tw`my-4`}>
                             <TextInput
                                 style={tw.style(`h-12 bg-white px-4`, {fontSize: 16})}
