@@ -1,89 +1,200 @@
 import React, {useEffect, useState} from "react";
-import {Pressable, Text, View} from "react-native";
-import HomeContainer from "../../components/HomeContainer";
-import {StackNavigationProp} from "@react-navigation/stack";
+import {Dimensions, Pressable, ScrollView, TextInput, View} from "react-native";
 import tw from "tailwind-react-native-classnames";
-import RecordCard from "../../components/RecordCard";
-import {useActionSheet} from "@expo/react-native-action-sheet";
-import {useUser} from "../../components/UserProvider";
-import {RecordObj, StatObj} from "../../utils/types";
-import firebase from "firebase";
-import {RouteProp} from "@react-navigation/native";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {Feather} from "@expo/vector-icons";
 import BodyText from "../../components/BodyText";
+import RNPickerSelect from "react-native-picker-select";
+import {useUser} from "../../components/UserProvider";
+import {StatObj} from "../../utils/types";
+import firebase from "firebase";
+import {SlideModal} from "react-native-slide-modal";
+import LogContainer from "../../components/LogContainer";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
-export default function Moments({route, navigation}: {route: RouteProp<any>, navigation: StackNavigationProp<any>}) {
+export default function Moments({navigation}: { navigation: StackNavigationProp<any> }) {
     const user = useUser();
-    const [records, setRecords] = useState<(RecordObj & {joinedStats: StatObj[]})[]>([]);
+    const [stats, setStats] = useState<StatObj[]>([]);
+    const [thisStats, setThisStats] = useState<(StatObj & {value: string | number})[]>([]);
+    const [searchQuery, setSearchQuery] = useState<string>("");
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [iter, setIter] = useState<number>(0);
 
     useEffect(() => {
-        console.log("useEffect firing");
+        if (!user) return navigation.navigate("Login");
+    }, []);
 
-        if (!user) {
-            console.log("no user");
-            navigation.navigate("Login");
+    useEffect(() => {
+        if (!searchQuery) {
+            setStats([]);
             return;
         }
 
-        console.log(user.uid);
+        const endQuery = searchQuery.replace(/.$/, c => String.fromCharCode(c.charCodeAt(0) + 1));
+
+        const db = firebase.firestore();
+        db
+            // @ts-ignore
+            .collection(`users/${user.uid}/stats`)
+            .where("name", ">=", searchQuery)
+            .where("name", "<", endQuery)
+            .get()
+            .then(querySnapshot => {
+                let stats: StatObj[] = [];
+
+                querySnapshot.forEach(doc => {
+                    stats.push({
+                        id: doc.id,
+                        ...doc.data(),
+                    } as StatObj);
+                });
+
+                const filteredStats = stats.filter(d => !thisStats.some(x => x.id === d.id));
+
+                setStats(filteredStats);
+            });
+    }, [searchQuery]);
+
+    const canSave = thisStats.length && thisStats.every(d => d.value !== "" && d.value !== null && d.value !== undefined);
+
+    function onSave() {
+        if (!(canSave && user)) return;
 
         const db = firebase.firestore();
         db
             .collection(`users/${user.uid}/records`)
-            .get()
-            .then(querySnapshot => {
-                let records: RecordObj[] = [];
-
-                querySnapshot.forEach(doc => {
-                    records.push({
-                        id: doc.id,
-                        ...doc.data(),
-                    } as RecordObj);
-                });
-
-                if (!records.length) {
-                    setRecords([]);
-                    return;
-                }
-
-                const allIds = records.reduce((a, b) => [...a, ...b.stats.map(d => d.statId)], [] as string[]);
-                const uniqueIds = [...new Set(allIds)];
-
-                db
-                    .collection(`users/${user.uid}/stats`)
-                    .where(firebase.firestore.FieldPath.documentId(), "in", uniqueIds)
-                    .get()
-                    .then(querySnapshot => {
-                        let stats: StatObj[] = [];
-
-                        querySnapshot.forEach(doc => {
-                            stats.push({
-                                id: doc.id,
-                                ...doc.data(),
-                            } as StatObj);
-                        })
-
-                        const joinedRecords = records.map(record => ({
-                            ...record,
-                            joinedStats: record.stats.map(d => stats.find(x => x.id === d.statId)).filter(d => d) as StatObj[],
-                        }));
-
-                        setRecords(joinedRecords);
-                    });
-            });
-    }, [route.params && route.params.refresh, user]);
-
-    const {showActionSheetWithOptions} = useActionSheet();
+            .add({
+                createdAt: new Date(),
+                stats: thisStats.map(stat => ({
+                    statId: stat.id,
+                    value: stat.value,
+                })),
+            })
+            .then(res => {
+                setThisStats([]);
+                setIter(iter + 1);
+                setModalOpen(false);
+            }).catch(e => console.log(e));
+    }
 
     return (
-        <HomeContainer navigation={navigation} onPress={() => showActionSheetWithOptions({
-            options: ["Moment", "Daily recap", "Weekly recap", "Monthly recap", "Cancel"],
-            cancelButtonIndex: 4
-        }, i => {
-            if (i !== 4) navigation.navigate("New");
-        })}>
-            {records.map(record => (
-                <RecordCard record={record} key={record.id}/>
-            ))}
-        </HomeContainer>
+        <View style={tw`bg-white`}>
+            <SlideModal
+                screenContainer={
+                    <View style={tw.style(`w-full h-full`)}>
+                        <LogContainer
+                            navigation={navigation}
+                            iter={iter}
+                            setIter={setIter}
+                            modalOpen={modalOpen}
+                            setModalOpen={setModalOpen}
+                        />
+                    </View>
+                }
+                modalHeaderTitle="New record"
+                modalContainer={
+                    <KeyboardAwareScrollView style={tw.style(`w-full h-full bg-gray-50`, {minHeight: Dimensions.get("window").height - 110})}>
+                        <View style={tw`my-4`}>
+                            <TextInput
+                                style={tw.style(`h-12 bg-white px-4`, {fontSize: 16})}
+                                placeholderTextColor="#bbbbbb"
+                                placeholder="Search for stat to add"
+                                value={searchQuery}
+                                onChangeText={text => setSearchQuery(text)}
+                            />
+                            {stats.map(stat => (
+                                <Pressable
+                                    key={stat.id}
+                                    style={tw`h-12 bg-white px-4 flex-row items-center border-t border-gray-100`}
+                                    onPress={() => {
+                                        setSearchQuery("");
+                                        setThisStats([{...stat, value: stat.type === "note" ? "" : 0}, ...thisStats]);
+                                    }}
+                                >
+                                    <View style={tw`w-6 h-6 mr-4 bg-green-400 rounded-full items-center justify-center`}>
+                                        <Feather name="plus" color="white" size={16}/>
+                                    </View>
+                                    <BodyText>{stat.name}</BodyText>
+                                </Pressable>
+                            ))}
+                        </View>
+                        {thisStats.map((stat, i) => (
+                            <React.Fragment key={stat.id}>
+                                <View style={tw`px-3 h-12 border flex-row items-center bg-white border-gray-100 px-4`}>
+                                    <Pressable
+                                        style={tw`h-full justify-center`}
+                                        onPress={() => {
+                                            let newStats = [...thisStats];
+                                            newStats.splice(i, 1);
+                                            setThisStats(newStats);
+                                        }}
+                                    >
+                                        <View style={tw`w-6 h-6 mr-4 bg-red-400 rounded-full items-center justify-center`}>
+                                            <Feather name="minus" color="white" size={16}/>
+                                        </View>
+                                    </Pressable>
+                                    <BodyText>{stat.name}</BodyText>
+                                    {stat.type !== "note" && (
+                                        <View style={tw`ml-auto`}>
+                                            {stat.type === "score" ? (
+                                                <RNPickerSelect
+                                                    placeholder={{label: "Score", value: null}}
+                                                    style={{
+                                                        inputIOS: tw.style(`w-24 border-l border-gray-100 pl-4 h-12`, {fontSize: 16}),
+                                                        inputAndroid: tw.style(`w-24 border-l border-gray-100 h-12`, {fontSize: 16})
+                                                    }}
+                                                    onValueChange={(value) => {
+                                                        let newStats = [...thisStats];
+                                                        let newStat = {...stat};
+                                                        newStat.value = +value;
+                                                        newStats.splice(i, 1, newStat);
+                                                        setThisStats(newStats);
+                                                    }}
+                                                    items={Array(7).fill(0).map((d, i) => ({label: (i + 1).toString(), value: (i + 1).toString()}))}
+                                                />
+                                            ) : (
+                                                <TextInput
+                                                    style={tw.style(`w-24 border-l border-gray-100 pl-4 h-12`, {fontSize: 16})}
+                                                    placeholder="Number"
+                                                    keyboardType="numeric"
+                                                    value={stat.value.toString()}
+                                                    onChangeText={text => {
+                                                        let newStats = [...thisStats];
+                                                        let newStat = {...stat};
+                                                        newStat.value = +text;
+                                                        newStats.splice(i, 1, newStat);
+                                                        setThisStats(newStats);
+                                                    }}
+                                                />
+                                            )}
+                                        </View>
+                                    )}
+                                </View>
+                                {stat.type === "note" && (
+                                    <TextInput
+                                        multiline={true}
+                                        style={tw.style(`bg-white text-base px-4 pt-2 pb-3 border-b border-gray-100`, {minHeight: 128})}
+                                        placeholder="Add note: an explanation, context, etc."
+                                        value={stat.value.toString()}
+                                        onChangeText={text => {
+                                            let newStats = [...thisStats];
+                                            let newStat = {...stat};
+                                            newStat.value = text;
+                                            newStats.splice(i, 1, newStat);
+                                            setThisStats(newStats);
+                                        }}
+                                    />
+                                )}
+                            </React.Fragment>
+                        ))}
+                    </KeyboardAwareScrollView>
+                }
+                modalType="iOS Form Sheet"
+                modalVisible={modalOpen}
+                pressCancel={() => setModalOpen(false)}
+                pressDone={onSave}
+                doneDisabled={!canSave}
+            />
+        </View>
     );
-}
+};
