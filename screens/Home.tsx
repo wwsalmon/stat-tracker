@@ -1,10 +1,10 @@
 import React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import Moments from "./Home/Moments";
 import {Feather} from "@expo/vector-icons";
 import Settings from "./Home/Settings";
 import Stats from "./Home/Stats";
 import Graphs from "./Home/Graphs";
+import LogContainer from "./Home/Log/LogContainer";
 
 export default function Home({}: {}) {
     const Tab = createBottomTabNavigator();
@@ -29,7 +29,7 @@ export default function Home({}: {}) {
                 headerShown: false,
             })}
         >
-            <Tab.Screen name="Log" component={Moments}/>
+            <Tab.Screen name="Log" component={LogContainer}/>
             <Tab.Screen name="Stats" component={Stats}/>
             <Tab.Screen name="Graphs" component={Graphs}/>
             <Tab.Screen name="Settings" component={Settings}/>

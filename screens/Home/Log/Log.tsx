@@ -3,18 +3,18 @@ import {Dimensions, Pressable, ScrollView, TextInput, View} from "react-native";
 import tw from "tailwind-react-native-classnames";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {Feather} from "@expo/vector-icons";
-import BodyText from "../../components/BodyText";
+import BodyText from "../../../components/BodyText";
 import RNPickerSelect from "react-native-picker-select";
-import {useUser} from "../../components/UserProvider";
-import {StatObj} from "../../utils/types";
+import {useUser} from "../../../components/UserProvider";
+import {StatObj} from "../../../utils/types";
 import firebase from "firebase";
 import {SlideModal} from "react-native-slide-modal";
-import LogContainer from "../../components/LogContainer";
+import LogMain from "../../../components/LogMain";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-import {format, setHours} from "date-fns";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import {RouteProp} from "@react-navigation/native";
 
-export default function Moments({navigation}: { navigation: StackNavigationProp<any> }) {
+export default function Log({navigation, route}: { navigation: StackNavigationProp<any>, route: RouteProp<any> }) {
     const user = useUser();
     const [stats, setStats] = useState<StatObj[]>([]);
     const [thisStats, setThisStats] = useState<(StatObj & {value: string | number})[]>([]);
@@ -87,8 +87,9 @@ export default function Moments({navigation}: { navigation: StackNavigationProp<
             <SlideModal
                 screenContainer={
                     <View style={tw.style(`w-full h-full`)}>
-                        <LogContainer
+                        <LogMain
                             navigation={navigation}
+                            route={route}
                             iter={iter}
                             setIter={setIter}
                             modalOpen={modalOpen}

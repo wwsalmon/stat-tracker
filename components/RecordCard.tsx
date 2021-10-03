@@ -3,14 +3,18 @@ import {Pressable, Text, View} from "react-native";
 import React from "react";
 import {format} from "date-fns";
 import {RecordObj, StatObj} from "../utils/types";
+import {StackNavigationProp} from "@react-navigation/stack";
 
-export default function RecordCard({record}: {record: RecordObj & {joinedStats: StatObj[]}}) {
+export default function RecordCard({record, navigation}: {record: RecordObj & {joinedStats: StatObj[]}, navigation: StackNavigationProp<any>}) {
     const combinedStats = record.joinedStats.map(d => ({...d, value: record.stats.find(x => x.statId === d.id)?.value}));
     const numberStats = combinedStats.filter(d => d.type !== "note");
     const textStats = combinedStats.filter(d => d.type === "note");
 
     return (
-        <Pressable style={tw`my-4 rounded border-gray-300`}>
+        <Pressable
+            style={tw`my-4 rounded border-gray-300`}
+            onPress={() => navigation.navigate("Log Item", {recordId: record.id})}
+        >
             {numberStats.map((stat, i) => (
                 <View
                     style={tw.style(`h-12 flex-row items-center px-4`, {backgroundColor: stat.color}, i === 0 && "rounded-t")}

@@ -7,9 +7,11 @@ import {RecordObj, StatObj} from "../utils/types";
 import firebase from "firebase";
 import {View} from "react-native";
 import tw from "tailwind-react-native-classnames";
+import {RouteProp} from "@react-navigation/native";
 
-export default function LogContainer({navigation, iter, setIter, modalOpen, setModalOpen}: {
+export default function LogMain({navigation, route, iter, setIter, modalOpen, setModalOpen}: {
     navigation: StackNavigationProp<any>,
+    route: RouteProp<any>,
     iter: number,
     setIter: Dispatch<SetStateAction<number>>,
     modalOpen: boolean,
@@ -74,13 +76,13 @@ export default function LogContainer({navigation, iter, setIter, modalOpen, setM
                         setRecords(joinedRecords);
                     });
             });
-    }, [iter, user]);
+    }, [iter, user, route.params && route.params.refresh]);
 
     return (
         <HomeContainer navigation={navigation} onPress={() => setModalOpen(true)}>
             <View style={tw`pb-72`}>
                 {records.map(record => (
-                    <RecordCard record={record} key={record.id}/>
+                    <RecordCard record={record} key={record.id} navigation={navigation}/>
                 ))}
             </View>
         </HomeContainer>
