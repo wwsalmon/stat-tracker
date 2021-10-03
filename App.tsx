@@ -6,6 +6,10 @@ import {ActionSheetProvider} from "@expo/react-native-action-sheet";
 import NewRecord from "./screens/NewRecord";
 import NewStat from "./screens/NewStat";
 
+import {LogBox} from "react-native";
+
+LogBox.ignoreLogs(["Setting a timer"]);
+
 import firebase from "firebase";
 import Login from "./screens/Login";
 import UserProvider from "./components/UserProvider";

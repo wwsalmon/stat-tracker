@@ -11,7 +11,7 @@ export interface StatObj {
 
 export interface RecordObj {
     id: string,
-    createdAt: string,
+    createdAt: {seconds: number, nanoseconds: number},
     stats: RecordStatObj[],
 }
 

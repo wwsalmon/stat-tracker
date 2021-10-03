@@ -13,10 +13,18 @@ import BodyText from "../../components/BodyText";
 
 export default function Moments({route, navigation}: {route: RouteProp<any>, navigation: StackNavigationProp<any>}) {
     const user = useUser();
-    const [records, setRecords] = useState<RecordObj[]>([]);
+    const [records, setRecords] = useState<(RecordObj & {joinedStats: StatObj[]})[]>([]);
 
     useEffect(() => {
-        if (!user) return navigation.navigate("Login");
+        console.log("useEffect firing");
+
+        if (!user) {
+            console.log("no user");
+            navigation.navigate("Login");
+            return;
+        }
+
+        console.log(user.uid);
 
         const db = firebase.firestore();
         db
@@ -32,9 +40,37 @@ export default function Moments({route, navigation}: {route: RouteProp<any>, nav
                     } as RecordObj);
                 });
 
-                setRecords(records);
+                if (!records.length) {
+                    setRecords([]);
+                    return;
+                }
+
+                const allIds = records.reduce((a, b) => [...a, ...b.stats.map(d => d.statId)], [] as string[]);
+                const uniqueIds = [...new Set(allIds)];
+
+                db
+                    .collection(`users/${user.uid}/stats`)
+                    .where(firebase.firestore.FieldPath.documentId(), "in", uniqueIds)
+                    .get()
+                    .then(querySnapshot => {
+                        let stats: StatObj[] = [];
+
+                        querySnapshot.forEach(doc => {
+                            stats.push({
+                                id: doc.id,
+                                ...doc.data(),
+                            } as StatObj);
+                        })
+
+                        const joinedRecords = records.map(record => ({
+                            ...record,
+                            joinedStats: record.stats.map(d => stats.find(x => x.id === d.statId)).filter(d => d) as StatObj[],
+                        }));
+
+                        setRecords(joinedRecords);
+                    });
             });
-    }, [route.params && route.params.refresh]);
+    }, [route.params && route.params.refresh, user]);
 
     const {showActionSheetWithOptions} = useActionSheet();
 
@@ -46,23 +82,8 @@ export default function Moments({route, navigation}: {route: RouteProp<any>, nav
             if (i !== 4) navigation.navigate("New");
         })}>
             {records.map(record => (
-                <Pressable key={record.id} onPress={() => null}>
-                    {record.stats.map(stat => (
-                        <BodyText key={record.id + stat.statId}>{stat.statId} {stat.value}</BodyText>
-                    ))}
-                </Pressable>
+                <RecordCard record={record} key={record.id}/>
             ))}
-            <RecordCard stats={[
-                {label: "Stress", score: 0, bgClass: "bg-blue-500"},
-                {label: "Anxiety", score: 0, bgClass: "bg-purple-500"},
-            ]} note="Feeling great! completely at peace with myself" date="2021-09-21"/>
-            <RecordCard stats={[
-                {label: "Stress", score: 2, bgClass: "bg-blue-500"},
-                {label: "Anxiety", score: 4, bgClass: "bg-purple-500"},
-            ]} note="Not feeling great, kinda anxious, a little stressed" date="2021-09-19"/>
-            <RecordCard stats={[
-                {label: "Happiness", score: 8, bgClass: "bg-yellow-500"},
-            ]} note="Feeling hella good! Spent the afternoon with friends" date="2021-09-18"/>
         </HomeContainer>
     );
 }

@@ -12,7 +12,10 @@ export default function Login({navigation}: {navigation: StackNavigationProp<any
     const user = useUser();
 
     useEffect(() => {
-        if (user) navigation.navigate("Home");
+        if (user) {
+            console.log("got user");
+            navigation.navigate("Home");
+        }
     }, [user]);
 
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest(
