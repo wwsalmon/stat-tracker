@@ -32,6 +32,7 @@ export default function LogContainer({navigation, iter, setIter, modalOpen, setM
         const db = firebase.firestore();
         db
             .collection(`users/${user.uid}/records`)
+            .orderBy("createdAt", "desc")
             .get()
             .then(querySnapshot => {
                 let records: RecordObj[] = [];
