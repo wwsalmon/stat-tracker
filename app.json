@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "stat-tracker",
-    "slug": "stat-tracker",
-    "version": "1.0.0",
+    "name": "Seven: Stat Tracker",
+    "slug": "seven",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,7 +17,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.samsonzhang.seven"
     },
     "android": {
       "adaptiveIcon": {
