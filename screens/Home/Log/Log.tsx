@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Dimensions, Pressable, ScrollView, TextInput, View} from "react-native";
+import {Dimensions, Pressable, Text, TextInput, View} from "react-native";
 import tw from "tailwind-react-native-classnames";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {Feather} from "@expo/vector-icons";
@@ -118,7 +118,7 @@ export default function Log({navigation, route}: { navigation: StackNavigationPr
                         <View style={tw`my-4`}>
                             <TextInput
                                 style={tw.style(`h-12 bg-white px-4`, {fontSize: 16})}
-                                placeholderTextColor="#bbbbbb"
+                                placeholderTextColor="#999999"
                                 placeholder="Search for stat to add"
                                 value={searchQuery}
                                 onChangeText={text => setSearchQuery(text)}
@@ -138,6 +138,7 @@ export default function Log({navigation, route}: { navigation: StackNavigationPr
                                     <BodyText>{stat.name}</BodyText>
                                 </Pressable>
                             ))}
+                            <Text style={tw`text-gray-400 ml-4 mt-2`}>Create new stats through the "Stats" tab</Text>
                         </View>
                         {thisStats.map((stat, i) => (
                             <React.Fragment key={stat.id}>
