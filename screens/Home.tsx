@@ -4,7 +4,7 @@ import {Feather} from "@expo/vector-icons";
 import Settings from "./Home/Settings";
 import Stats from "./Home/Stats/Stats";
 import Graphs from "./Home/Graphs";
-import LogContainer from "./Home/Log/LogContainer";
+import Log from "./Home/Log/Log";
 
 export default function Home({}: {}) {
     const Tab = createBottomTabNavigator();
@@ -29,7 +29,7 @@ export default function Home({}: {}) {
                 headerShown: false,
             })}
         >
-            <Tab.Screen name="Log" component={LogContainer}/>
+            <Tab.Screen name="Log" component={Log}/>
             <Tab.Screen name="Stats" component={Stats}/>
             <Tab.Screen name="Graphs" component={Graphs}/>
             <Tab.Screen name="Settings" component={Settings}/>

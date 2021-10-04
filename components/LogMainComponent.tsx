@@ -9,7 +9,7 @@ import {View} from "react-native";
 import tw from "tailwind-react-native-classnames";
 import {RouteProp} from "@react-navigation/native";
 
-export default function LogMain({navigation, route, iter, setModalOpen}: {
+export default function LogMainComponent({navigation, route, iter, setModalOpen}: {
     navigation: StackNavigationProp<any>,
     route: RouteProp<any>,
     iter: number,

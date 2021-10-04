@@ -14,7 +14,7 @@ import {Feather} from "@expo/vector-icons";
 import ItemHeader from "./ItemHeader";
 import H2 from "./H2";
 
-export default function LogItemMain({navigation, route, setModalOpen, iter, recordId}: {
+export default function LogItemComponent({navigation, route, setModalOpen, iter, recordId}: {
     navigation: StackNavigationProp<any>,
     route: RouteProp<any>,
     setModalOpen: Dispatch<SetStateAction<boolean>>,

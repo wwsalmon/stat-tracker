@@ -2,7 +2,7 @@ import React from "react";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {RouteProp} from "@react-navigation/native";
 import LogModalContainer from "../../../components/LogModalContainer";
-import LogItemMain from "../../../components/LogItemMain";
+import LogItemComponent from "../../../components/LogItemComponent";
 
 export default function LogItem({navigation, route}: {
     navigation: StackNavigationProp<any>,
@@ -16,6 +16,6 @@ export default function LogItem({navigation, route}: {
     }
 
     return (
-        <LogModalContainer navigation={navigation} route={route} ScreenContainer={LogItemMain} recordId={recordId}/>
+        <LogModalContainer navigation={navigation} route={route} ScreenContainer={LogItemComponent} recordId={recordId}/>
     );
 }

@@ -1,11 +1,17 @@
 import React from "react";
-import {StackNavigationProp} from "@react-navigation/stack";
-import LogMain from "../../../components/LogMain";
-import {RouteProp} from "@react-navigation/native";
-import LogModalContainer from "../../../components/LogModalContainer";
+import {createStackNavigator} from "@react-navigation/stack";
+import LogMain from "./LogMain";
+import LogItem from "./LogItem";
 
-export default function Log({navigation, route}: { navigation: StackNavigationProp<any>, route: RouteProp<any> }) {
+export default function Log({}: {}) {
+    const Stack = createStackNavigator();
+
     return (
-        <LogModalContainer navigation={navigation} route={route} ScreenContainer={LogMain}/>
-    )
+        <Stack.Navigator initialRouteName="Log Main" screenOptions={{
+            headerShown: false
+        }}>
+            <Stack.Screen name="Log Main" component={LogMain}/>
+            <Stack.Screen name="Log Item" component={LogItem}/>
+        </Stack.Navigator>
+    );
 }
