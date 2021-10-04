@@ -9,12 +9,10 @@ import {View} from "react-native";
 import tw from "tailwind-react-native-classnames";
 import {RouteProp} from "@react-navigation/native";
 
-export default function LogMain({navigation, route, iter, setIter, modalOpen, setModalOpen}: {
+export default function LogMain({navigation, route, iter, setModalOpen}: {
     navigation: StackNavigationProp<any>,
     route: RouteProp<any>,
     iter: number,
-    setIter: Dispatch<SetStateAction<number>>,
-    modalOpen: boolean,
     setModalOpen: Dispatch<SetStateAction<boolean>>,
 }) {
     const user = useUser();

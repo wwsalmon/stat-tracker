@@ -25,7 +25,7 @@ export default function RecordCard({record, navigation}: {record: RecordObj & {j
                 </View>
             ))}
             {textStats.map((stat, i) => (
-                <View key={record.id + stat.id} style={tw.style(`px-4 py-3`, {backgroundColor: stat.color})}>
+                <View key={record.id + stat.id} style={tw.style(`px-4 py-3`, {backgroundColor: stat.color}, i === 0 && numberStats.length === 0 && "rounded-t")}>
                     <Text style={tw`text-white`}>{stat.name}</Text>
                     <Text style={tw`text-gray-400`} numberOfLines={1}>{stat.value}</Text>
                 </View>
