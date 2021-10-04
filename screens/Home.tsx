@@ -2,7 +2,7 @@ import React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {Feather} from "@expo/vector-icons";
 import Settings from "./Home/Settings";
-import Stats from "./Home/Stats";
+import Stats from "./Home/Stats/Stats";
 import Graphs from "./Home/Graphs";
 import LogContainer from "./Home/Log/LogContainer";
 

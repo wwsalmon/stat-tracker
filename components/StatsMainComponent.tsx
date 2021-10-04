@@ -5,15 +5,13 @@ import HomeContainer from "../components/HomeContainer";
 import {StatObj} from "../utils/types";
 import {useUser} from "../components/UserProvider";
 import firebase from "firebase";
-import {View} from "react-native";
+import {Pressable, View} from "react-native";
 import {RouteProp} from "@react-navigation/native";
 import tw from "tailwind-react-native-classnames";
 
-export default function StatsContainer({navigation, iter, setIter, modalOpen, setModalOpen}: {
+export default function StatsMainComponent({navigation, iter, setModalOpen}: {
     navigation: StackNavigationProp<any>,
     iter: number,
-    setIter: Dispatch<SetStateAction<number>>,
-    modalOpen: boolean,
     setModalOpen: Dispatch<SetStateAction<boolean>>,
 }) {
     const user = useUser();
@@ -43,11 +41,15 @@ export default function StatsContainer({navigation, iter, setIter, modalOpen, se
     return (
         <HomeContainer navigation={navigation} onPress={() => setModalOpen(true)}>
             {stats.map(stat => (
-                <View key={stat.id} style={tw`py-4 border-b border-gray-300 flex-row items-center`}>
+                <Pressable
+                    key={stat.id}
+                    style={tw`py-4 border-b border-gray-300 flex-row items-center`}
+                    onPress={() => navigation.navigate("Stats Item", {statId: stat.id})}
+                >
                     <View style={tw.style(`h-4 w-4 mr-4 rounded-full`, {backgroundColor: stat.color})}/>
                     <BodyText>{stat.name}</BodyText>
                     <BodyText className="ml-auto text-gray-400">{stat.type}</BodyText>
-                </View>
+                </Pressable>
             ))}
         </HomeContainer>
     );

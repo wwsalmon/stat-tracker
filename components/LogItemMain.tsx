@@ -11,6 +11,8 @@ import firebase from "firebase";
 import {Pressable, View, Text, ScrollView, Alert} from "react-native";
 import tw from "tailwind-react-native-classnames";
 import {Feather} from "@expo/vector-icons";
+import ItemHeader from "./ItemHeader";
+import H2 from "./H2";
 
 export default function LogItemMain({navigation, route, setModalOpen, iter, recordId}: {
     navigation: StackNavigationProp<any>,
@@ -90,26 +92,11 @@ export default function LogItemMain({navigation, route, setModalOpen, iter, reco
 
     return (
         <Container withTabs={true} noScroll={true}>
-            <View style={tw`flex-row items-center my-4`}>
-                <Pressable onPress={() => navigation.goBack()} style={tw`flex-row items-center`}>
-                    <Feather name="arrow-left" size={20}/>
-                    <BodyText className="ml-2">Back</BodyText>
-                </Pressable>
-                <Pressable style={tw`ml-auto`} onPress={() => setModalOpen(true)}>
-                    <Feather name="edit-2" size={20} color="#aaaaaa"/>
-                </Pressable>
-                <Pressable style={tw`ml-8`} onPress={() => Alert.alert(
-                    "Delete record",
-                    "Are you sure you want to delete this record? This action cannot be undone.",
-                    [{text: "Delete", style: "destructive", onPress: onDelete}, {text: "Cancel", style: "cancel"}]
-                )}>
-                    <Feather name="trash" size={20} color="lightcoral"/>
-                </Pressable>
-            </View>
+            <ItemHeader navigation={navigation} setModalOpen={setModalOpen} onDelete={onDelete} itemName="record"/>
             {record ? (
                 <ScrollView>
                     <View style={tw`pb-60`}>
-                        <Text style={tw`text-xl font-bold mb-6`}>Record from {format(new Date(record.createdAt.seconds * 1000), "MMMM d, yyyy 'at' h:mm aa")}</Text>
+                        <H2 className="mb-6">Record from {format(new Date(record.createdAt.seconds * 1000), "MMMM d, yyyy 'at' h:mm aa")}</H2>
                         {numberStats && numberStats.map((stat, i) => (
                             <View
                                 style={tw.style(`h-12 flex-row items-center px-4`, {backgroundColor: stat.color}, i === 0 && "rounded-t", i === numberStats.length - 1 && (textStats && textStats.length === 0) && "rounded-b")}
