@@ -14,11 +14,12 @@ import {RouteProp} from "@react-navigation/native";
 export default function StatsModalContainer({navigation, route, ScreenContainer, statId}: {
     navigation: StackNavigationProp<any>,
     route: RouteProp<any>,
-    ScreenContainer: ({navigation, route, setModalOpen, iter, statId}: {
+    ScreenContainer: ({navigation, route, setModalOpen, iter, setIter, statId}: {
         navigation: StackNavigationProp<any>,
         route: RouteProp<any>,
         setModalOpen: Dispatch<SetStateAction<boolean>>,
         iter: number,
+        setIter: Dispatch<SetStateAction<number>>,
         statId?: string,
     }) => ReactElement,
     statId?: string,
@@ -105,6 +106,7 @@ export default function StatsModalContainer({navigation, route, ScreenContainer,
                             navigation={navigation}
                             route={route}
                             iter={iter}
+                            setIter={setIter}
                             setModalOpen={setModalOpen}
                             statId={statId}
                         />

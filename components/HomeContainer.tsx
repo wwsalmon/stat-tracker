@@ -1,4 +1,4 @@
-import {Pressable, ScrollView, Text, View} from "react-native";
+import {Pressable, RefreshControl, ScrollView, Text, View} from "react-native";
 import tw from "tailwind-react-native-classnames";
 import {Feather} from "@expo/vector-icons";
 import Container from "./Container";
@@ -8,12 +8,13 @@ import {useRoute} from "@react-navigation/native";
 import {StackNavigationProp} from "@react-navigation/stack";
 import H1 from "./H1";
 
-export default function HomeContainer({children, navigation, onPress}: {
+export default function HomeContainer({children, navigation, onPress, refreshing, onRefresh}: {
     children: ReactNode,
     navigation: StackNavigationProp<any>,
     onPress: () => any;
+    refreshing?: boolean,
+    onRefresh?: () => any;
 }) {
-    const {showActionSheetWithOptions} = useActionSheet();
     const route = useRoute();
 
     return (
@@ -27,7 +28,13 @@ export default function HomeContainer({children, navigation, onPress}: {
                     <Feather name="plus" color="white" size={20}/>
                 </Pressable>
             </View>
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    onRefresh ? (
+                        <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh}/>
+                    ) : <></>
+                }
+            >
                 {children}
             </ScrollView>
         </Container>

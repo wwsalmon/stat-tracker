@@ -9,14 +9,16 @@ import {View} from "react-native";
 import tw from "tailwind-react-native-classnames";
 import {RouteProp} from "@react-navigation/native";
 
-export default function LogMainComponent({navigation, route, iter, setModalOpen}: {
+export default function LogMainComponent({navigation, route, iter, setIter, setModalOpen}: {
     navigation: StackNavigationProp<any>,
     route: RouteProp<any>,
     iter: number,
+    setIter: Dispatch<SetStateAction<number>>,
     setModalOpen: Dispatch<SetStateAction<boolean>>,
 }) {
     const user = useUser();
     const [records, setRecords] = useState<(RecordObj & {joinedStats: StatObj[]})[]>([]);
+    const [refreshing, setRefreshing] = useState<boolean>(false);
 
     useEffect(() => {
         console.log("useEffect firing");
@@ -72,12 +74,19 @@ export default function LogMainComponent({navigation, route, iter, setModalOpen}
                         }));
 
                         setRecords(joinedRecords);
+
+                        setRefreshing(false);
                     });
             });
     }, [iter, user, route.params && route.params.refresh]);
 
+    function onRefresh() {
+        setIter(iter + 1);
+        setRefreshing(true);
+    }
+
     return (
-        <HomeContainer navigation={navigation} onPress={() => setModalOpen(true)}>
+        <HomeContainer navigation={navigation} onPress={() => setModalOpen(true)} onRefresh={onRefresh}>
             <View style={tw`pb-72`}>
                 {records.map(record => (
                     <RecordCard record={record} key={record.id} navigation={navigation}/>

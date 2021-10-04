@@ -9,13 +9,15 @@ import {Pressable, View} from "react-native";
 import {RouteProp} from "@react-navigation/native";
 import tw from "tailwind-react-native-classnames";
 
-export default function StatsMainComponent({navigation, iter, setModalOpen}: {
+export default function StatsMainComponent({navigation, iter, setIter, setModalOpen}: {
     navigation: StackNavigationProp<any>,
+    setIter: Dispatch<SetStateAction<number>>,
     iter: number,
     setModalOpen: Dispatch<SetStateAction<boolean>>,
 }) {
     const user = useUser();
     const [stats, setStats] = useState<StatObj[]>([]);
+    const [refreshing, setRefreshing] = useState<boolean>(false);
 
     useEffect(() => {
         if (!user) return navigation.navigate("Login");
@@ -35,11 +37,22 @@ export default function StatsMainComponent({navigation, iter, setModalOpen}: {
                 });
 
                 setStats(stats);
+                setRefreshing(false);
             });
     }, [iter]);
 
+    function onRefresh() {
+        setRefreshing(true);
+        setIter(iter + 1);
+    }
+
     return (
-        <HomeContainer navigation={navigation} onPress={() => setModalOpen(true)}>
+        <HomeContainer
+            navigation={navigation}
+            onPress={() => setModalOpen(true)}
+            onRefresh={onRefresh}
+            refreshing={refreshing}
+        >
             {stats.map(stat => (
                 <Pressable
                     key={stat.id}

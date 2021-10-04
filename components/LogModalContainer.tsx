@@ -17,11 +17,12 @@ import {ScreenContainer} from "react-native-screens";
 export default function LogModalContainer({navigation, route, ScreenContainer, recordId}: {
     navigation: StackNavigationProp<any>,
     route: RouteProp<any>,
-    ScreenContainer: ({navigation, route, setModalOpen, iter, recordId}: {
+    ScreenContainer: ({navigation, route, setModalOpen, iter, setIter, recordId}: {
         navigation: StackNavigationProp<any>,
         route: RouteProp<any>,
         setModalOpen: Dispatch<SetStateAction<boolean>>,
         iter: number,
+        setIter: Dispatch<SetStateAction<number>>,
         recordId?: string,
     }) => ReactElement,
     recordId?: string,
@@ -168,6 +169,7 @@ export default function LogModalContainer({navigation, route, ScreenContainer, r
                             route={route}
                             setModalOpen={setModalOpen}
                             iter={iter}
+                            setIter={setIter}
                             recordId={recordId}
                         />
                     </View>
