@@ -2,7 +2,7 @@
   "expo": {
     "name": "Seven: Stat Tracker",
     "slug": "seven",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -18,7 +18,13 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.samsonzhang.seven"
+      "bundleIdentifier": "com.samsonzhang.seven",
+      "config":  {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.426374293625-8gl4ik9931rsqi6map4gfgbasnaalgji"
+        }
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
