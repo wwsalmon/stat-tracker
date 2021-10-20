@@ -9,7 +9,7 @@ import firebase from "firebase";
 import Login from "./screens/Login";
 import UserProvider from "./components/UserProvider";
 
-LogBox.ignoreLogs(["Setting a timer"]);
+if (LogBox) LogBox.ignoreLogs(["Setting a timer"]);
 
 const firebaseConfig = {
     apiKey: "AIzaSyBVeYtruQriOcf37AgD8PhPo9rIVc827YY",
