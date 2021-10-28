@@ -33,7 +33,9 @@
     "react-native-slide-modal": "^0.0.32",
     "react-native-web": "~0.13.12",
     "react-native-wheel-color-picker": "^1.1.0",
-    "tailwind-react-native-classnames": "^1.5.1"
+    "tailwind-react-native-classnames": "^1.5.1",
+    "expo-google-sign-in": "~9.2.1",
+    "expo-constants": "~11.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

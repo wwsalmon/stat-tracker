@@ -8,6 +8,8 @@ import {useUser} from "../components/UserProvider";
 import * as Google from "expo-auth-session/providers/google";
 import firebase from "firebase";
 import tw from "tailwind-react-native-classnames";
+import * as GoogleSignIn from 'expo-google-sign-in';
+import Constants from 'expo-constants';
 
 export default function Login({navigation}: {navigation: StackNavigationProp<any>}) {
     const user = useUser();
@@ -19,6 +21,10 @@ export default function Login({navigation}: {navigation: StackNavigationProp<any
         if (user) {
             console.log("got user");
             navigation.navigate("Home");
+        } else {
+            if (Constants.appOwnership !== "expo") {
+                initAsync();
+            }
         }
     }, [user]);
 
@@ -39,6 +45,21 @@ export default function Login({navigation}: {navigation: StackNavigationProp<any
         }
     }, [response]);
 
+    const initAsync = async () => {
+        await GoogleSignIn.initAsync({
+            clientId: "426374293625-8gl4ik9931rsqi6map4gfgbasnaalgji.apps.googleusercontent.com",
+        });
+    };
+
+    const signInAsync = async () => {
+        try {
+            await GoogleSignIn.askForPlayServicesAsync();
+            await GoogleSignIn.signInAsync();
+        } catch ({ message }) {
+            alert('login: Error:' + message);
+        }
+    };
+
     const canLoginWithEmail = !!(email && password);
 
     function loginWithEmail() {
@@ -50,7 +71,7 @@ export default function Login({navigation}: {navigation: StackNavigationProp<any
     return (
         <Container noScroll={true}>
             <H1 className="my-6">Log in</H1>
-            <Pressable onPress={() => promptAsync()} style={tw`p-2 bg-gray-100 rounded items-center`}>
+            <Pressable onPress={() => (Constants.appOwnership === "expo") ? promptAsync() : signInAsync()} style={tw`p-2 bg-gray-100 rounded items-center`}>
                 <BodyText>Sign up/in with Google</BodyText>
             </Pressable>
             <View style={tw`mt-8 border-gray-300 border-t w-full h-8`}/>
