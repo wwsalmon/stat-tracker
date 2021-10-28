@@ -53,17 +53,19 @@ export default function StatsMainComponent({navigation, iter, setIter, setModalO
             onRefresh={onRefresh}
             refreshing={refreshing}
         >
-            {stats.map(stat => (
-                <Pressable
-                    key={stat.id}
-                    style={tw`py-4 border-b border-gray-300 flex-row items-center`}
-                    onPress={() => navigation.navigate("Stats Item", {statId: stat.id})}
-                >
-                    <View style={tw.style(`h-4 w-4 mr-4 rounded-full`, {backgroundColor: stat.color})}/>
-                    <BodyText>{stat.name}</BodyText>
-                    <BodyText className="ml-auto text-gray-400">{stat.type}</BodyText>
-                </Pressable>
-            ))}
+            <View style={tw`pb-72`}>
+                {stats.map((stat, i) => (
+                    <Pressable
+                        key={stat.id}
+                        style={tw.style(`py-4 border-gray-300 flex-row items-center`, i > 0 && "border-t")}
+                        onPress={() => navigation.navigate("Stats Item", {statId: stat.id})}
+                    >
+                        <View style={tw.style(`h-4 w-4 mr-4 rounded-full`, {backgroundColor: stat.color})}/>
+                        <BodyText>{stat.name}</BodyText>
+                        <BodyText className="ml-auto text-gray-400">{stat.type}</BodyText>
+                    </Pressable>
+                ))}
+            </View>
         </HomeContainer>
     );
 }
