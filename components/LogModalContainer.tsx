@@ -30,6 +30,7 @@ export default function LogModalContainer({navigation, route, ScreenContainer, r
     const user = useUser();
     const [stats, setStats] = useState<StatObj[]>([]);
     const [thisStats, setThisStats] = useState<(StatObj & {value: string | number})[]>([]);
+    const [thisStatsOld, setThisStatsOld] = useState<(StatObj & {value: string | number})[]>([]);
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [thisDate, setThisDate] = useState<Date | null>(new Date());
     const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -83,6 +84,7 @@ export default function LogModalContainer({navigation, route, ScreenContainer, r
                         }));
 
                         setThisStats(newThisStats);
+                        setThisStatsOld(newThisStats);
                         setThisDate(new Date(data.createdAt.seconds * 1000));
 
                         setIsLoading(false);
@@ -243,6 +245,7 @@ export default function LogModalContainer({navigation, route, ScreenContainer, r
                                                             inputIOS: tw.style(`w-24 border-l border-gray-100 pl-4 h-12`, {fontSize: 16}),
                                                             inputAndroid: tw.style(`w-24 border-l border-gray-100 h-12`, {fontSize: 16})
                                                         }}
+                                                        value={stat.value.toString()}
                                                         onValueChange={(value) => {
                                                             let newStats = [...thisStats];
                                                             let newStat = {...stat};
@@ -293,7 +296,10 @@ export default function LogModalContainer({navigation, route, ScreenContainer, r
                 }
                 modalType="iOS Form Sheet"
                 modalVisible={modalOpen}
-                pressCancel={() => setModalOpen(false)}
+                pressCancel={() => {
+                    setModalOpen(false);
+                    setThisStats(thisStatsOld);
+                }}
                 pressDone={onSave}
                 doneDisabled={!canSave}
             />
