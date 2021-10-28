@@ -34,7 +34,7 @@ export default function App() {
                         headerShown: false
                     }}>
                         <Stack.Screen name="Home" component={Home}/>
-                        <Stack.Screen name="Login" component={Login}/>
+                        <Stack.Screen name="Login" component={Login} options={{gestureEnabled: false}}/>
                     </Stack.Navigator>
                 </NavigationContainer>
             </UserProvider>
