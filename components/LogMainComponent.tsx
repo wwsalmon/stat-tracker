@@ -56,7 +56,7 @@ export default function LogMainComponent({navigation, route, iter, setIter, setM
 
                 db
                     .collection(`users/${user.uid}/stats`)
-                    .where(firebase.firestore.FieldPath.documentId(), "in", uniqueIds)
+                    // .where(firebase.firestore.FieldPath.documentId(), "in", uniqueIds)
                     .get()
                     .then(querySnapshot => {
                         let stats: StatObj[] = [];
