@@ -283,6 +283,7 @@ export default function LogModalContainer({navigation, route, ScreenContainer, r
                                                 newStats.splice(i, 1, newStat);
                                                 setThisStats(newStats);
                                             }}
+                                            scrollEnabled={false}
                                         />
                                     )}
                                 </React.Fragment>
