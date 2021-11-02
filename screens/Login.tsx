@@ -50,9 +50,9 @@ export default function Login({navigation}: {navigation: StackNavigationProp<any
             clientId: "426374293625-8gl4ik9931rsqi6map4gfgbasnaalgji.apps.googleusercontent.com",
         });
         const user = await GoogleSignIn.signInSilentlyAsync();
-        if (!user) return;
+        if (!user || !setUser) return;
         // not the prettiest typing but works for now -- uid, email, etc. are the props that overlap
-        setUserAndNavigate(user as unknown as User);
+        setUser(user as unknown as User);
     };
 
     const signInAsync = async () => {
@@ -61,17 +61,12 @@ export default function Login({navigation}: {navigation: StackNavigationProp<any
             const {user} = await GoogleSignIn.signInAsync();
             if (!user) return alert('Failed to log in, no user');
             // not the prettiest typing but works for now -- uid, email, etc. are the props that overlap
-            setUserAndNavigate(user as unknown as User);
+            if (!setUser) return;
+            setUser(user as unknown as User);
         } catch ({ message }) {
             alert('login: Error:' + message);
         }
     };
-
-    function setUserAndNavigate(user: User) {
-        if (!setUser) return;
-        setUser(user);
-        navigation.navigate("Home");
-    }
 
     const canLoginWithEmail = !!(email && password);
 
