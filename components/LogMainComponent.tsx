@@ -16,20 +16,15 @@ export default function LogMainComponent({navigation, route, iter, setIter, setM
     setIter: Dispatch<SetStateAction<number>>,
     setModalOpen: Dispatch<SetStateAction<boolean>>,
 }) {
-    const user = useUser();
+    const {user} = useUser();
     const [records, setRecords] = useState<(RecordObj & {joinedStats: StatObj[]})[]>([]);
     const [refreshing, setRefreshing] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log("useEffect firing");
-
         if (!user) {
-            console.log("no user");
             navigation.navigate("Login");
             return;
         }
-
-        console.log(user.uid);
 
         const db = firebase.firestore();
         db

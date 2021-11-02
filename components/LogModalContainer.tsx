@@ -27,7 +27,7 @@ export default function LogModalContainer({navigation, route, ScreenContainer, r
     }) => ReactElement,
     recordId?: string,
 }) {
-    const user = useUser();
+    const {user} = useUser();
     const [stats, setStats] = useState<StatObj[]>([]);
     const [thisStats, setThisStats] = useState<(StatObj & {value: string | number})[]>([]);
     const [thisStatsOld, setThisStatsOld] = useState<(StatObj & {value: string | number})[]>([]);

@@ -21,7 +21,7 @@ export default function StatsItemComponent({navigation, iter, setModalOpen, stat
         return <></>;
     }
 
-    const user = useUser();
+    const {user} = useUser();
     const [stat, setStat] = useState<StatObj | null>(null);
 
     useEffect(() => {

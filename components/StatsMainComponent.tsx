@@ -15,7 +15,7 @@ export default function StatsMainComponent({navigation, iter, setIter, setModalO
     iter: number,
     setModalOpen: Dispatch<SetStateAction<boolean>>,
 }) {
-    const user = useUser();
+    const {user} = useUser();
     const [stats, setStats] = useState<StatObj[]>([]);
     const [refreshing, setRefreshing] = useState<boolean>(false);
 

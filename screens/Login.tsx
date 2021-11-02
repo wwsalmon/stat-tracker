@@ -10,16 +10,16 @@ import firebase from "firebase";
 import tw from "tailwind-react-native-classnames";
 import * as GoogleSignIn from 'expo-google-sign-in';
 import Constants from 'expo-constants';
+import User = firebase.User;
 
 export default function Login({navigation}: {navigation: StackNavigationProp<any>}) {
-    const user = useUser();
+    const {user, setUser} = useUser();
 
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
     useEffect(() => {
         if (user) {
-            console.log("got user");
             navigation.navigate("Home");
         } else {
             if (Constants.appOwnership !== "expo") {
@@ -49,16 +49,29 @@ export default function Login({navigation}: {navigation: StackNavigationProp<any
         await GoogleSignIn.initAsync({
             clientId: "426374293625-8gl4ik9931rsqi6map4gfgbasnaalgji.apps.googleusercontent.com",
         });
+        const user = await GoogleSignIn.signInSilentlyAsync();
+        if (!user) return;
+        // not the prettiest typing but works for now -- uid, email, etc. are the props that overlap
+        setUserAndNavigate(user as unknown as User);
     };
 
     const signInAsync = async () => {
         try {
             await GoogleSignIn.askForPlayServicesAsync();
-            await GoogleSignIn.signInAsync();
+            const {user} = await GoogleSignIn.signInAsync();
+            if (!user) return alert('Failed to log in, no user');
+            // not the prettiest typing but works for now -- uid, email, etc. are the props that overlap
+            setUserAndNavigate(user as unknown as User);
         } catch ({ message }) {
             alert('login: Error:' + message);
         }
     };
+
+    function setUserAndNavigate(user: User) {
+        if (!setUser) return;
+        setUser(user);
+        navigation.navigate("Home");
+    }
 
     const canLoginWithEmail = !!(email && password);
 

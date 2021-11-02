@@ -7,9 +7,11 @@ import {StackNavigationProp} from "@react-navigation/stack";
 import firebase from "firebase";
 import {useUser} from "../../components/UserProvider";
 import BodyText from "../../components/BodyText";
+import Constants from "expo-constants";
+import * as GoogleSignIn from 'expo-google-sign-in';
 
 export default function Settings({navigation}: { navigation: StackNavigationProp<any> }) {
-    const user = useUser();
+    const {user, setUser} = useUser();
 
     if (!user) {
         navigation.navigate("Login");
@@ -21,8 +23,15 @@ export default function Settings({navigation}: { navigation: StackNavigationProp
             <BodyText>Signed in as {user.displayName} with UID {user.uid}</BodyText>
             <Pressable
                 onPress={() => {
-                    firebase.auth().signOut();
-                    navigation.navigate("Login");
+                    if (Constants.appOwnership !== "expo") {
+                        (async () => {
+                            await GoogleSignIn.signOutAsync();
+                            if (setUser) setUser(null);
+                            navigation.navigate("Login");
+                        })();
+                    } else {
+                        firebase.auth().signOut();
+                    }
                 }}
                 style={tw`p-2 bg-gray-100 items-center mt-4`}
             >

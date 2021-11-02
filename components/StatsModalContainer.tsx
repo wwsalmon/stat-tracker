@@ -24,7 +24,7 @@ export default function StatsModalContainer({navigation, route, ScreenContainer,
     }) => ReactElement,
     statId?: string,
 }) {
-    const user = useUser();
+    const {user} = useUser();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [color, setColor] = useState<string>("#0026ff");
