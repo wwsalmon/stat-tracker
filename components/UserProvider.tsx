@@ -2,6 +2,7 @@ import React, {createContext, Dispatch, ReactNode, SetStateAction, useContext, u
 import firebase from "firebase";
 import * as WebBrowser from "expo-web-browser";
 import User = firebase.User;
+import Constants from "expo-constants";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -12,9 +13,11 @@ export default function UserProvider({children}: {children: ReactNode}) {
     const [user, setUser] = useState<User | null>(null);
 
     firebase.auth().onAuthStateChanged(user => {
-        if (user) return setUser(user);
+        if (Constants.appOwnership === "expo") {
+            if (user) return setUser(user);
 
-        setUser(null);
+            setUser(null);
+        }
     });
 
     return (

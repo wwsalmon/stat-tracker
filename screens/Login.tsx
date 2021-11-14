@@ -26,7 +26,7 @@ export default function Login({navigation}: {navigation: StackNavigationProp<any
                 initAsync();
             }
         }
-    }, [user]);
+    }, [user && user.uid]);
 
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest(
         {
@@ -49,20 +49,20 @@ export default function Login({navigation}: {navigation: StackNavigationProp<any
         await GoogleSignIn.initAsync({
             clientId: "426374293625-8gl4ik9931rsqi6map4gfgbasnaalgji.apps.googleusercontent.com",
         });
-        const user = await GoogleSignIn.signInSilentlyAsync();
-        if (!user || !setUser) return;
+        const newUser = await GoogleSignIn.signInSilentlyAsync();
+        if (!newUser || !setUser) return;
         // not the prettiest typing but works for now -- uid, email, etc. are the props that overlap
-        setUser(user as unknown as User);
+        setUser(newUser as unknown as User);
     };
 
     const signInAsync = async () => {
         try {
             await GoogleSignIn.askForPlayServicesAsync();
-            const {user} = await GoogleSignIn.signInAsync();
-            if (!user) return alert('Failed to log in, no user');
+            const {user: newUser} = await GoogleSignIn.signInAsync();
+            if (!newUser) return alert('Failed to log in, no user');
             // not the prettiest typing but works for now -- uid, email, etc. are the props that overlap
             if (!setUser) return;
-            setUser(user as unknown as User);
+            setUser(newUser as unknown as User);
         } catch ({ message }) {
             alert('login: Error:' + message);
         }

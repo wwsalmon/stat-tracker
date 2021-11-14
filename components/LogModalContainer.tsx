@@ -1,5 +1,5 @@
 import React, {Dispatch, ReactElement, SetStateAction, useEffect, useState} from "react";
-import {Dimensions, Pressable, Text, TextInput, View} from "react-native";
+import {Alert, Dimensions, Pressable, Text, TextInput, View} from "react-native";
 import tw from "tailwind-react-native-classnames";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {Feather} from "@expo/vector-icons";
@@ -91,10 +91,6 @@ export default function LogModalContainer({navigation, route, ScreenContainer, r
                     });
             })
     }, [recordId]);
-
-    useEffect(() => {
-        if (!user) return navigation.navigate("Login");
-    }, []);
 
     useEffect(() => {
         if (!searchQuery) {

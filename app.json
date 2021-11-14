@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.samsonzhang.seven",
-      "config":  {
+      "config": {
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.426374293625-8gl4ik9931rsqi6map4gfgbasnaalgji"
         }
@@ -30,7 +30,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.samsonzhang.seven",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"

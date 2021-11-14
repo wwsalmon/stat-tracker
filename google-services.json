@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "426374293625",
+    "project_id": "stat-tracker-fcd7c",
+    "storage_bucket": "stat-tracker-fcd7c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426374293625:android:ab76baa07fb738dec24ca8",
+        "android_client_info": {
+          "package_name": "com.samsonzhang.seven"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426374293625-qvfs79tfflc1cqm19vdea3lslmbfpkb3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgUnCBZj-kYIrG4ColGAsm3D0liyRtf0k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426374293625-qvfs79tfflc1cqm19vdea3lslmbfpkb3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "426374293625-8gl4ik9931rsqi6map4gfgbasnaalgji.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.samsonzhang.seven"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
