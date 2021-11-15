@@ -50,7 +50,7 @@ export default function LogModalContainer({navigation, route, ScreenContainer, r
         const db = firebase.firestore();
 
         db
-            .collection(`users/${user.uid}/records`)
+            .collection(`users/${user.email}/records`)
             .doc(recordId)
             .get()
             .then(snapshot => {
@@ -64,7 +64,7 @@ export default function LogModalContainer({navigation, route, ScreenContainer, r
                 const uniqueIds = data.stats.map(d => d.statId);
 
                 db
-                    .collection(`users/${user.uid}/stats`)
+                    .collection(`users/${user.email}/stats`)
                     .where(firebase.firestore.FieldPath.documentId(), "in", uniqueIds)
                     .get()
                     .then(querySnapshot => {
@@ -103,7 +103,7 @@ export default function LogModalContainer({navigation, route, ScreenContainer, r
         const db = firebase.firestore();
         db
             // @ts-ignore
-            .collection(`users/${user.uid}/stats`)
+            .collection(`users/${user.email}/stats`)
             .where("name", ">=", searchQuery)
             .where("name", "<", endQuery)
             .get()
@@ -141,11 +141,11 @@ export default function LogModalContainer({navigation, route, ScreenContainer, r
         try {
             recordId ?
                 await db
-                    .collection(`users/${user.uid}/records`)
+                    .collection(`users/${user.email}/records`)
                     .doc(recordId)
                     .update(newDoc) :
                 await db
-                    .collection(`users/${user.uid}/records`)
+                    .collection(`users/${user.email}/records`)
                     .add(newDoc);
 
             setThisStats([]);

@@ -28,7 +28,7 @@ export default function LogMainComponent({navigation, route, iter, setIter, setM
 
         const db = firebase.firestore();
         db
-            .collection(`users/${user.uid}/records`)
+            .collection(`users/${user.email}/records`)
             .orderBy("createdAt", "desc")
             .get()
             .then(querySnapshot => {
@@ -50,7 +50,7 @@ export default function LogMainComponent({navigation, route, iter, setIter, setM
                 const uniqueIds = [...new Set(allIds)];
 
                 db
-                    .collection(`users/${user.uid}/stats`)
+                    .collection(`users/${user.email}/stats`)
                     // .where(firebase.firestore.FieldPath.documentId(), "in", uniqueIds)
                     .get()
                     .then(querySnapshot => {

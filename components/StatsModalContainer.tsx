@@ -46,7 +46,7 @@ export default function StatsModalContainer({navigation, route, ScreenContainer,
         const db = firebase.firestore();
 
         db
-            .collection(`users/${user.uid}/stats`)
+            .collection(`users/${user.email}/stats`)
             .doc(statId)
             .get()
             .then(snapshot => {
@@ -80,11 +80,11 @@ export default function StatsModalContainer({navigation, route, ScreenContainer,
         try {
             statId ?
                 await db
-                    .collection(`users/${user.uid}/stats`)
+                    .collection(`users/${user.email}/stats`)
                     .doc(statId)
                     .update(newDoc) :
                 await db
-                    .collection(`users/${user.uid}/stats`)
+                    .collection(`users/${user.email}/stats`)
                     .add(newDoc);
 
             setColor("#0026ff");

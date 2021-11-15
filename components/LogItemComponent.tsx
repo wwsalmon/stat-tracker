@@ -38,7 +38,7 @@ export default function LogItemComponent({navigation, route, setModalOpen, iter,
         const db = firebase.firestore();
 
         db
-            .collection(`users/${user.uid}/records`)
+            .collection(`users/${user.email}/records`)
             .doc(recordId)
             .get()
             .then(snapshot => {
@@ -52,7 +52,7 @@ export default function LogItemComponent({navigation, route, setModalOpen, iter,
                 const uniqueIds = data.stats.map(d => d.statId);
 
                 db
-                    .collection(`users/${user.uid}/stats`)
+                    .collection(`users/${user.email}/stats`)
                     .where(firebase.firestore.FieldPath.documentId(), "in", uniqueIds)
                     .get()
                     .then(querySnapshot => {
@@ -82,7 +82,7 @@ export default function LogItemComponent({navigation, route, setModalOpen, iter,
         const db = firebase.firestore();
 
         db
-            .collection(`users/${user.uid}/records`)
+            .collection(`users/${user.email}/records`)
             .doc(recordId)
             .delete()
             .then(() => {

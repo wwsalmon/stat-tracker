@@ -20,7 +20,7 @@ export default function Settings({navigation}: { navigation: StackNavigationProp
     return user ? (
         <Container noScroll={true}>
             <H1 className="my-6">Settings</H1>
-            <BodyText>Signed in as {user.displayName} with UID {user.uid}</BodyText>
+            <BodyText>Signed in as {user.displayName} with email {user.email}</BodyText>
             <Pressable
                 onPress={() => {
                     if (Constants.appOwnership !== "expo") {

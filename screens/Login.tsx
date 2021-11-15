@@ -10,7 +10,6 @@ import firebase from "firebase";
 import tw from "tailwind-react-native-classnames";
 import * as GoogleSignIn from 'expo-google-sign-in';
 import Constants from 'expo-constants';
-import User = firebase.User;
 
 export default function Login({navigation}: {navigation: StackNavigationProp<any>}) {
     const {user, setUser} = useUser();
@@ -26,7 +25,7 @@ export default function Login({navigation}: {navigation: StackNavigationProp<any
                 initAsync();
             }
         }
-    }, [user && user.uid]);
+    }, [user && user.email]);
 
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest(
         {
@@ -51,8 +50,7 @@ export default function Login({navigation}: {navigation: StackNavigationProp<any
         });
         const newUser = await GoogleSignIn.signInSilentlyAsync();
         if (!newUser || !setUser) return;
-        // not the prettiest typing but works for now -- uid, email, etc. are the props that overlap
-        setUser(newUser as unknown as User);
+        setUser(newUser);
     };
 
     const signInAsync = async () => {
@@ -60,9 +58,8 @@ export default function Login({navigation}: {navigation: StackNavigationProp<any
             await GoogleSignIn.askForPlayServicesAsync();
             const {user: newUser} = await GoogleSignIn.signInAsync();
             if (!newUser) return alert('Failed to log in, no user');
-            // not the prettiest typing but works for now -- uid, email, etc. are the props that overlap
             if (!setUser) return;
-            setUser(newUser as unknown as User);
+            setUser(newUser);
         } catch ({ message }) {
             alert('login: Error:' + message);
         }

@@ -24,7 +24,7 @@ export default function StatsMainComponent({navigation, iter, setIter, setModalO
 
         const db = firebase.firestore();
         db
-            .collection(`users/${user.uid}/stats`)
+            .collection(`users/${user.email}/stats`)
             .get()
             .then(querySnapshot => {
                 let stats: StatObj[] = [];

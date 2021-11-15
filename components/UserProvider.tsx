@@ -6,11 +6,12 @@ import Constants from "expo-constants";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const UserContext = createContext<{ user: User | null, setUser: Dispatch<SetStateAction<User | null>> | null }>({user: null, setUser: null});
+export type UserInfo = {displayName?: string | null, email?: string | null};
+const UserContext = createContext<{ user: UserInfo | null, setUser: Dispatch<SetStateAction<UserInfo | null>> | null }>({user: null, setUser: null});
 export const useUser = () => useContext(UserContext);
 
 export default function UserProvider({children}: {children: ReactNode}) {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserInfo | null>(null);
 
     firebase.auth().onAuthStateChanged(user => {
         if (Constants.appOwnership === "expo") {
