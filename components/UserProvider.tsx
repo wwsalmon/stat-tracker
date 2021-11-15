@@ -14,6 +14,8 @@ export default function UserProvider({children}: {children: ReactNode}) {
     const [user, setUser] = useState<UserInfo | null>(null);
 
     firebase.auth().onAuthStateChanged(user => {
+        if (user && user.email && user.email === "seventest@samsonzhang.com") return setUser(user);
+
         if (Constants.appOwnership === "expo") {
             if (user) return setUser(user);
 
